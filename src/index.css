@@ -1,0 +1,92 @@
+header {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+}
+
+.jumbotron {
+    background-color: #023047;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item {
+    flex: 1;
+    
+}
+
+main {
+    padding: 0 10%;
+    font-family: 'Open Sans'
+}
+
+#flashcard-img {
+    object-fit: contain;
+    width: 40px;
+    height: 100px;
+}
+
+
+.card-wrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.qtn-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.qtn-wrapper {
+    display: flex;
+}
+
+.qtn-child {
+    flex: 1;
+    margin: 10px;
+}
+
+
+.card-header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-btn {
+    margin: 0px 3px;
+}
+
+/*buttons in a deck view card that are delete buttons - push them to the left */
+.card-btn.btn-danger {
+    margin-left: auto;
+}
+
+.card {
+    margin-top: 5px;
+}
+
+input, label, textarea{
+    display: block;
+    width: 100%;
+}
+
+input, textarea {
+    margin-bottom: 20px;
+}
+
+
+
+form button {
+    margin-right: 5px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&family=VT323&display=swap');
+body {
+  --bs-font-sans-serif: 'Kdam Thmor Pro', sans-serif;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-font-monospace: 'VT323', monospace;
+}

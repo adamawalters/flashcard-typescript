@@ -3,9 +3,9 @@
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
 
-import { Card, Deck } from "../Types/types";
+import type { Card, Deck, CreateDeckType } from "../Types/types";
 
-const API_BASE_URL = process.env.API_BASE_URL || "https://localhost:3000"
+const API_BASE_URL = "http://localhost:3000"
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -44,7 +44,7 @@ function stripCards(deck : Deck) {
  *  If the response is not in the 200 - 399 range the promise is rejected.
  */
 
-async function fetchJson(url: string, options, onCancel) {
+async function fetchJson(url: string, options: RequestInit, onCancel: Array<Deck> | Array<Card> | Deck | Card) {
   try {
     const response = await fetch(url, options);
 
@@ -55,8 +55,8 @@ async function fetchJson(url: string, options, onCancel) {
     if (response.status === 204) {
       return null;
     }
-
-    return await response.json();
+    let testResponse = await response.json()
+    return testResponse
 
   } catch (error: unknown) {
     if (error instanceof Error && error.name !== "AbortError") {
@@ -72,7 +72,7 @@ async function fetchJson(url: string, options, onCancel) {
  * @returns {Promise<[deck]>}
  *  a promise that resolves to a possibly empty array of decks saved in the database.
  */
-export async function listDecks(signal : AbortSignal) {
+export async function listDecks(signal? : AbortSignal) {
   const url = `${API_BASE_URL}/decks?_embed=cards`;
   return await fetchJson(url, { signal }, []);
 }
@@ -87,15 +87,14 @@ export async function listDecks(signal : AbortSignal) {
  * @returns {Promise<deck>}
  *  a promise that resolves the saved deck, which will now have an `id` property.
  */
-export async function createDeck(deck, signal) {
+export async function createDeck(deck: CreateDeckType) {
   const url = `${API_BASE_URL}/decks`;
   const options = {
     method: "POST",
     headers,
-    body: JSON.stringify(stripCards(deck)),
-    signal,
+    body: JSON.stringify(deck),
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options, <Deck>{});
 }
 
 /**
@@ -107,9 +106,9 @@ export async function createDeck(deck, signal) {
  * @returns {Promise<any>}
  *  a promise that resolves to the saved deck.
  */
-export async function readDeck(deckId, signal) {
+export async function readDeck(deckId: number, signal: AbortSignal) {
   const url = `${API_BASE_URL}/decks/${deckId}?_embed=cards`;
-  return await fetchJson(url, { signal }, {});
+  return await fetchJson(url, { signal }, <Deck>{});
 }
 
 /**
@@ -121,14 +120,15 @@ export async function readDeck(deckId, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated deck.
  */
-export async function updateDeck(updatedDeck, signal) {
+export async function updateDeck(updatedDeck : Deck, signal: AbortSignal) {
   const url = `${API_BASE_URL}/decks/${updatedDeck.id}?_embed=cards`;
-  const options = {
+  const options: RequestInit = {
     method: "PUT",
     headers,
     body: JSON.stringify(stripCards(updatedDeck)),
     signal,
   };
+
   return await fetchJson(url, options, updatedDeck);
 }
 
@@ -141,10 +141,10 @@ export async function updateDeck(updatedDeck, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to an empty object.
  */
-export async function deleteDeck(deckId, signal) {
+export async function deleteDeck(deckId: number) {
   const url = `${API_BASE_URL}/decks/${deckId}`;
-  const options = { method: "DELETE", signal };
-  return await fetchJson(url, options);
+  const options = { method: "DELETE" };
+  return await fetchJson(url, options, <Deck>{});
 }
 
 /**
@@ -159,7 +159,7 @@ export async function deleteDeck(deckId, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the new card, which will have an `id` property.
  */
-export async function createCard(deckId, card, signal) {
+export async function createCard(deckId: number, card: Card, signal: AbortSignal) {
   // There is a bug in json-server, if you post to /decks/:deckId/cards the associated deckId is a string
   // and the card is not related to the deck because the data types of the ID's are different.
   const url = `${API_BASE_URL}/cards`;
@@ -170,7 +170,7 @@ export async function createCard(deckId, card, signal) {
     body: JSON.stringify(card),
     signal,
   };
-  return await fetchJson(url, options, card);
+  return await fetchJson(url, options, <Card>{});
 }
 
 /**
@@ -182,9 +182,9 @@ export async function createCard(deckId, card, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the saved card.
  */
-export async function readCard(cardId, signal) {
+export async function readCard(cardId: number, signal: AbortSignal) {
   const url = `${API_BASE_URL}/cards/${cardId}`;
-  return await fetchJson(url, { signal }, {});
+  return await fetchJson(url, { signal }, <Card>{});
 }
 
 /**
@@ -196,14 +196,14 @@ export async function readCard(cardId, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated card.
  */
-export async function updateCard(updatedCard, signal) {
+export async function updateCard(updatedCard: Card) {
   const url = `${API_BASE_URL}/cards/${updatedCard.id}`;
   const options = {
     method: "PUT",
     headers,
     body: JSON.stringify(updatedCard),
   };
-  return await fetchJson(url, options, updatedCard);
+  return await fetchJson(url, options, <Card>{});
 }
 
 /**
@@ -215,8 +215,8 @@ export async function updateCard(updatedCard, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to an empty object.
  */
-export async function deleteCard(cardId, signal) {
+export async function deleteCard(cardId: Card) {
   const url = `${API_BASE_URL}/cards/${cardId}`;
-  const options = { method: "DELETE", signal };
-  return await fetchJson(url, options);
+  const options = { method: "DELETE" };
+  return await fetchJson(url, options, <Card>{});
 }
