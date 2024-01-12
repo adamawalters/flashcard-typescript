@@ -11,7 +11,6 @@ import { default as DeckComponent } from "./Deck/Deck";
 export default function Layout() {
   const [decks, setDecks] = useState<Array<Deck>>([]);
   const navigate = useNavigate();
-
   const loadDecks = useCallback(async (signal?: AbortSignal) => {
     try {
       const decks = await listDecks(signal);
@@ -62,7 +61,7 @@ export default function Layout() {
               element={<CreateDeck loadDecks={loadDecks} />}
             ></Route>
             <Route
-              path="/decks/:deckId"
+              path="/decks/:deckId/*"
               element={
                 <DeckComponent
                   deleteDeckHandler={deleteDeckHandler}

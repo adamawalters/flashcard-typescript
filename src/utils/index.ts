@@ -120,7 +120,7 @@ export async function readDeck(deckId: number, signal: AbortSignal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated deck.
  */
-export async function updateDeck(updatedDeck : Deck, signal: AbortSignal) {
+export async function updateDeck(updatedDeck : Deck, signal?: AbortSignal) {
   const url = `${API_BASE_URL}/decks/${updatedDeck.id}?_embed=cards`;
   const options: RequestInit = {
     method: "PUT",
@@ -215,7 +215,7 @@ export async function updateCard(updatedCard: Card) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to an empty object.
  */
-export async function deleteCard(cardId: Card) {
+export async function deleteCard(cardId: number) {
   const url = `${API_BASE_URL}/cards/${cardId}`;
   const options = { method: "DELETE" };
   return await fetchJson(url, options, <Card>{});

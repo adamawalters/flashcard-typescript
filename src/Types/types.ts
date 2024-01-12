@@ -8,7 +8,7 @@
 }
 
  export type Card = {
-    id: string,
+    id: number,
     front: string,
     back: string,
     deckId: number,
