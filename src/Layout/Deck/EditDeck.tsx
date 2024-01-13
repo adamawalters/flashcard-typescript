@@ -3,7 +3,7 @@ import type { Deck } from '../../Types/types'
 
 type EditDeckProps = {
   deck: Deck,
-  toggleDeckUpdate: React.Dispatch<React.SetStateAction<boolean>>,
+  loadDeck: (signal?: AbortSignal) => Promise<void>,
   setDeck: React.Dispatch<React.SetStateAction<Deck>>,
 }
 
@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 import { updateDeck } from '../../utils';
 
-function EditDeck({deck, setDeck, toggleDeckUpdate} : EditDeckProps) {
+function EditDeck({deck, setDeck, loadDeck} : EditDeckProps) {
   /*Path: /decks/:deckId/edit */
 
   /*Prefill form state to existing deck */
@@ -37,7 +37,7 @@ function EditDeck({deck, setDeck, toggleDeckUpdate} : EditDeckProps) {
             setDeck({...formData});
             const id = response.id;
              /*Call for re-render of deck in parent*/
-            toggleDeckUpdate((currentValue) => !currentValue)
+            loadDeck()
             navigate(`/decks/${id}`)
         } catch(error) {
             if(error instanceof Error && error.name !== "AbortError") {

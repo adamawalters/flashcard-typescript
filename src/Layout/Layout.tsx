@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import type { Card, Deck } from "../Types/types";
+import type { Deck } from "../Types/types";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import { listDecks, deleteDeck } from "../utils";
 import Header from "./Header";
@@ -27,9 +27,9 @@ export default function Layout() {
     const abortController = new AbortController();
     loadDecks(abortController.signal);
     return () => abortController.abort();
-  }, []);
+  }, [loadDecks]);
 
-  /*Deletes deck after user confirmation. Passed to HomeDeckCard buttons in the "Deck" component*/
+  /*Deletes deck after user confirmation. Passed to Home and Deck components*/
   const deleteDeckHandler = async (deckIdToDelete: number) => {
     const canDelete =  window.confirm(`Delete this deck? You will not be able to recover it.`)
     if(canDelete) {

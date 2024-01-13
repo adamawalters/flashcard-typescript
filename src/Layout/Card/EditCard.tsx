@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Deck from "../Deck/Deck";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { readCard, updateCard } from "../../utils";
@@ -7,10 +7,10 @@ import CardForm from "./CardForm";
 
 type EditCardProps = {
   deck: Deck;
-  toggleDeckUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  loadDeck: (signal?: AbortSignal) => Promise<void>;
 };
 
-export default function EditCard({ deck, toggleDeckUpdate }: EditCardProps) {
+export default function EditCard({ deck, loadDeck }: EditCardProps) {
   /*This path: /decks/:deckId/cards/:cardId/edit */
   /*This is a form that lets you edit a card within a deck */
 
@@ -19,12 +19,14 @@ export default function EditCard({ deck, toggleDeckUpdate }: EditCardProps) {
   const deckId = Number(parameters.deckId);
   const cardId = Number(parameters.cardId);
 
-  const initialCardState: Card = {
-    front: "",
-    back: "",
-    deckId: 0,
-    id: 0,
-  };
+  const initialCardState: Card = useMemo(() => {
+    return {
+      id: 0,
+      front: "",
+      back: "",
+      deckId: 0,
+    };
+  }, []);
 
   /*Set up card state*/
   const [card, setCard] = useState<Card>(initialCardState);
@@ -46,7 +48,7 @@ export default function EditCard({ deck, toggleDeckUpdate }: EditCardProps) {
     }
     loadCard();
     return () => abortController.abort();
-  }, [cardId]);
+  }, [cardId, initialCardState]);
 
   /*Event handler when form is submitted. Post the card to the API (either update or create)  */
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +58,7 @@ export default function EditCard({ deck, toggleDeckUpdate }: EditCardProps) {
       await updateCard(card);
       navigate(`/decks/${deckId}`);
       /*Call for re-render in parent*/
-      toggleDeckUpdate((currentValue) => !currentValue);
+      loadDeck()
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
         throw error;

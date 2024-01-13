@@ -106,7 +106,7 @@ export async function createDeck(deck: CreateDeckType) {
  * @returns {Promise<any>}
  *  a promise that resolves to the saved deck.
  */
-export async function readDeck(deckId: number, signal: AbortSignal) {
+export async function readDeck(deckId: number, signal?: AbortSignal) {
   const url = `${API_BASE_URL}/decks/${deckId}?_embed=cards`;
   return await fetchJson(url, { signal }, <Deck>{});
 }

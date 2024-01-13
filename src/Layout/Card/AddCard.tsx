@@ -6,10 +6,10 @@ import { createCard } from '../../utils';
 
 type AddCardProps = {
   deck: Deck, 
-  toggleDeckUpdate: React.Dispatch<React.SetStateAction<boolean>>
+  loadDeck: (signal?: AbortSignal) => Promise<void>
 }
 
-export default function AddCard({deck, toggleDeckUpdate}: AddCardProps) {
+export default function AddCard({deck, loadDeck}: AddCardProps) {
     /*This path: /decks/:deckId/cards/new */
   /*Objective: lets users add cards to a deck one card at a time with a form for the front & back of the card. */
 
@@ -35,7 +35,7 @@ export default function AddCard({deck, toggleDeckUpdate}: AddCardProps) {
       await createCard(deckId, formData);
       setFormData({ ...initialFormData });
       /*Call for re-render in parent*/
-      toggleDeckUpdate((currentValue) => !currentValue);
+      loadDeck()
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
         console.log(error);

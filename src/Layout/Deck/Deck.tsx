@@ -1,61 +1,55 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  useParams,
-  useLocation,
-  Link,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useParams, useLocation, Link, Routes, Route } from "react-router-dom";
 import { deleteCard, readDeck } from "../../utils";
 import DeckTestCard from "./DeckTestCard";
 import Study from "./Study";
 import EditDeck from "./EditDeck";
 import EditCard from "../Card/EditCard";
 import AddCard from "../Card/AddCard";
-import type { Deck, Card } from "../../Types/types";
-
+import type { Deck } from "../../Types/types";
 
 type DeckProps = {
-  deleteDeckHandler:(deckIdToDelete: number) => Promise<void>,
-  loadDecks:  (signal?: AbortSignal) => Promise<void>
-}
+  deleteDeckHandler: (deckIdToDelete: number) => Promise<void>;
+  loadDecks: (signal?: AbortSignal) => Promise<void>;
+};
 
 function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
   /*This path: /decks/:deckId */
   /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
   /*Deck component has nested routes for: the study, edit, new card, or edit card view */
 
-  const initialDeck : Deck = {
+  const initialDeck: Deck = useMemo(() => {
+    return {
       id: 0,
       name: "",
       description: "",
-      cards: []
-  }
+      cards: [],
+    };
+  }, []);
 
-  const [deck, setDeck] = useState<Deck>(initialDeck)
-  const deckId = Number(useParams().deckId as string)
+  const [deck, setDeck] = useState<Deck>(initialDeck);
+  const deckId = Number(useParams().deckId as string);
   const url = useLocation().pathname;
   const [error, setError] = useState("");
-  const [deckChildUpdate, setDeckChildUpdate] = useState(false);
 
-  
-
-  const loadDeck = useCallback(async (signal : AbortSignal) => {
-    try {
-      const deckFromApi = await readDeck(deckId, signal);
-      setDeck(deckFromApi);
-      loadDecks()
-    } catch (error) {
-      if (error instanceof Error && error.name !== "AbortError") {
-        if (error.message.includes("404")) {
-          setError(`Deck ID ${deckId} not found`);
+  const loadDeck = useCallback(
+    async (signal?: AbortSignal) => {
+      try {
+        const deckFromApi = await readDeck(deckId, signal);
+        setDeck(deckFromApi);
+        loadDecks();
+      } catch (error) {
+        if (error instanceof Error && error.name !== "AbortError") {
+          if (error.message.includes("404")) {
+            setError(`Deck ID ${deckId} not found`);
+          }
+        } else {
+          throw error;
         }
-      } else {
-        throw error;
       }
-    }
-  }, [])
-  
+    },
+    [deckId, loadDecks]
+  );
 
   /*Set the deck to the deck fetched from the API - runs when child edits deck, or when deckID parameter changes*/
   useEffect(() => {
@@ -63,25 +57,26 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
     const abortController = new AbortController();
     loadDeck(abortController.signal);
     return () => abortController.abort();
-  }, [deckChildUpdate, deckId, loadDeck]);
+  }, [initialDeck, loadDeck]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
   const deleteCardHandler = async (cardIdToDelete: number) => {
-    if (
-      window.confirm("Delete this card? You will not be able to recover it.")
-    ) {
+    const canDelete = window.confirm(
+      "Delete this card? You will not be able to recover it."
+    );
+    if (canDelete) {
       /*Create the array of cards without the card to delete and update the state, then make an API call to remove the ID*/
       const cardsWithoutCard = deck.cards.filter(
         (card) => card.id !== cardIdToDelete
       );
       setDeck({ ...deck, cards: cardsWithoutCard });
       /*Update parent index */
-      loadDecks()
+      loadDecks();
 
       try {
         await deleteCard(cardIdToDelete);
       } catch (error) {
-        if(error instanceof Error) console.log(error.message);
+        if (error instanceof Error) console.log(error.message);
       }
     }
   };
@@ -154,8 +149,6 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
 
     /*Deck component displays the study, edit, new card, or edit card view */
 
-  
-
     return (
       <Routes>
         <Route
@@ -169,29 +162,21 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
             </main>
           }
         ></Route>
-        <Route path={`/study`}
-        element={<Study deck={deck} />}
-        >
-        </Route>
-        <Route path={`/edit`}
-        element={
-          <EditDeck
-            deck={deck}
-            toggleDeckUpdate={setDeckChildUpdate}
-            setDeck={setDeck}
-          />
-        }
-        >
-        </Route>
-        <Route path={`/cards/new`} element={
-          <AddCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} />
-        }>
-        </Route>
-        <Route path={`/cards/:cardId/edit`} element={
-          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} />
-        }>
-
-        </Route>
+        <Route path={`/study`} element={<Study deck={deck} />}></Route>
+        <Route
+          path={`/edit`}
+          element={
+            <EditDeck deck={deck} loadDeck={loadDeck} setDeck={setDeck} />
+          }
+        ></Route>
+        <Route
+          path={`/cards/new`}
+          element={<AddCard deck={deck} loadDeck={loadDeck} />}
+        ></Route>
+        <Route
+          path={`/cards/:cardId/edit`}
+          element={<EditCard deck={deck} loadDeck={loadDeck} />}
+        ></Route>
       </Routes>
     );
   }
