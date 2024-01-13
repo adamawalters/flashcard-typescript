@@ -37,7 +37,7 @@ export default function Layout() {
         (deck) => deck.id !== deckIdToDelete
       );
       setDecks(newDecksPostDeletion);
-      await deleteDeck(deckIdToDelete);
+     console.log(`delete deck response: ${JSON.stringify(await deleteDeck(deckIdToDelete))}`);
       loadDecks();
       navigate(`/`);
     }  

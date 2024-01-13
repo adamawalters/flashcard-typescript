@@ -66,7 +66,7 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
     );
     if (canDelete) {
       try {
-        await deleteCard(cardIdToDelete);
+        await deleteCard(cardIdToDelete)
         loadDeck();
         loadDecks();
       } catch (error) {
@@ -160,7 +160,7 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
         <Route
           path={`/edit`}
           element={
-            <EditDeck deck={deck} loadDeck={loadDeck} setDeck={setDeck} />
+            <EditDeck deck={deck} loadDeck={loadDeck} />
           }
         ></Route>
         <Route

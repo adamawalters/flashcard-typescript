@@ -1,10 +1,9 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import type { Deck } from '../../Types/types'
 
 type EditDeckProps = {
   deck: Deck,
   loadDeck: (signal?: AbortSignal) => Promise<void>,
-  setDeck: React.Dispatch<React.SetStateAction<Deck>>,
 }
 
 import {
@@ -14,7 +13,7 @@ import {
 } from "react-router-dom";
 import { updateDeck } from '../../utils';
 
-function EditDeck({deck, setDeck, loadDeck} : EditDeckProps) {
+function EditDeck({deck, loadDeck} : EditDeckProps) {
   /*Path: /decks/:deckId/edit */
 
   /*Prefill form state to existing deck */
