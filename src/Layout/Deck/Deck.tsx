@@ -48,7 +48,7 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
         }
       }
     },
-    [deckId, loadDecks]
+    [deckId, loadDecks],
   );
 
   /*Set the deck to the deck fetched from the API - runs when child edits deck, or when deckID parameter changes*/
@@ -62,11 +62,11 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
   const deleteCardHandler = async (cardIdToDelete: number) => {
     const canDelete = window.confirm(
-      "Delete this card? You will not be able to recover it."
+      "Delete this card? You will not be able to recover it.",
     );
     if (canDelete) {
       try {
-        await deleteCard(cardIdToDelete)
+        await deleteCard(cardIdToDelete);
         loadDeck();
         loadDecks();
       } catch (error) {
@@ -159,9 +159,7 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
         <Route path={`/study`} element={<Study deck={deck} />}></Route>
         <Route
           path={`/edit`}
-          element={
-            <EditDeck deck={deck} loadDeck={loadDeck} />
-          }
+          element={<EditDeck deck={deck} loadDeck={loadDeck} />}
         ></Route>
         <Route
           path={`/cards/new`}

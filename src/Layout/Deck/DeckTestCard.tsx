@@ -1,16 +1,21 @@
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from "react-router-dom";
 
 type DeckTestCardProps = {
-  cardId: number, 
-  front: string,
-  back: string,
-  deleteCardHandler: (cardIdToDelete: number) => Promise<void>
-}
+  cardId: number;
+  front: string;
+  back: string;
+  deleteCardHandler: (cardIdToDelete: number) => Promise<void>;
+};
 
-export default function DeckTestCard({cardId, front, back, deleteCardHandler}: DeckTestCardProps) {
+export default function DeckTestCard({
+  cardId,
+  front,
+  back,
+  deleteCardHandler,
+}: DeckTestCardProps) {
   /*Path: /decks/:deckId */
   /*This component is used by the <Deck /> component and generates a view for cards within the deck. Each card has a link to its edit page */
-  
+
   const url = useLocation().pathname;
 
   const cardUI = (

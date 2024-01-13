@@ -58,7 +58,7 @@ export default function EditCard({ deck, loadDeck }: EditCardProps) {
       await updateCard(card);
       navigate(`/decks/${deckId}`);
       /*Call for re-render in parent*/
-      loadDeck()
+      loadDeck();
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
         throw error;

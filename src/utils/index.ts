@@ -53,11 +53,10 @@ function stripCards(deck: Deck): Partial<Deck> {
 async function fetchJson<T>(
   url: string,
   options: RequestInit,
-  onCancel: Array<Deck> | Array<Card> | Deck | Card
-): Promise<T>{
+  onCancel: Array<Deck> | Array<Card> | Deck | Card,
+): Promise<T> {
   try {
     const response = await fetch(url, options);
-    
 
     if (response.status < 200 || response.status > 399) {
       throw new Error(`${response.status} - ${response.statusText}`);
@@ -67,8 +66,7 @@ async function fetchJson<T>(
       return null;
     } */
 
-    return await response.json() as T
-   
+    return (await response.json()) as T;
   } catch (error: unknown) {
     if (error instanceof Error && error.name !== "AbortError") {
       console.error(error.stack);
@@ -85,7 +83,7 @@ async function fetchJson<T>(
  */
 export async function listDecks(signal?: AbortSignal) {
   const url = `${API_BASE_URL}/decks?_embed=cards`;
-  return await fetchJson(url, { signal }, []);
+  return await fetchJson<Deck[]>(url, { signal }, []);
 }
 
 /**
@@ -173,7 +171,7 @@ export async function deleteDeck(deckId: number) {
 export async function createCard(
   deckId: number,
   card: CreateCardType,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) {
   // There is a bug in json-server, if you post to /decks/:deckId/cards the associated deckId is a string
   // and the card is not related to the deck because the data types of the ID's are different.

@@ -1,12 +1,12 @@
-import {useState} from 'react'
-import { useNavigate, Link } from 'react-router-dom';
-import type { Deck } from '../../Types/types'
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import type { Deck } from "../../Types/types";
 
 type StudyProps = {
-  deck: Deck
-}
+  deck: Deck;
+};
 
-export default function Study({deck} :StudyProps ) {
+export default function Study({ deck }: StudyProps) {
   /*Path: /decks/:deckId/study */
   /*Objective: gets deck from URL & API call & lets students study each card in the deck. Front or back is managed via state. Then restarts the program or goes home.  */
 
@@ -16,13 +16,12 @@ export default function Study({deck} :StudyProps ) {
   const [frontView, setFrontView] = useState(true);
   const navigate = useNavigate();
 
-
   const nextBtnHandler = () => {
     /*If we are at the last card, show popup to restart deck. */
     if (index === deck.cards.length - 1) {
       if (
         window.confirm(
-          "Restart cards? Click 'cancel' to return to the homepage"
+          "Restart cards? Click 'cancel' to return to the homepage",
         )
       ) {
         setIndex(0);

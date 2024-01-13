@@ -1,49 +1,45 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
-import type { Deck } from '../../Types/types'
+import { ChangeEvent, FormEvent, useState } from "react";
+import type { Deck } from "../../Types/types";
 
 type EditDeckProps = {
-  deck: Deck,
-  loadDeck: (signal?: AbortSignal) => Promise<void>,
-}
+  deck: Deck;
+  loadDeck: (signal?: AbortSignal) => Promise<void>;
+};
 
-import {
-  useParams,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import { updateDeck } from '../../utils';
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { updateDeck } from "../../utils";
 
-function EditDeck({deck, loadDeck} : EditDeckProps) {
+function EditDeck({ deck, loadDeck }: EditDeckProps) {
   /*Path: /decks/:deckId/edit */
 
   /*Prefill form state to existing deck */
-  const [formData, setFormData] = useState({...deck});
+  const [formData, setFormData] = useState({ ...deck });
   const { deckId } = useParams();
   const navigate = useNavigate();
 
   /*Keep form state and input updated*/
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  
   /*Event handler runs when updated deck data is submitted. Posts to server and goes to deck page. Deck state updated to form.  */
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    
-        try{
-            const response = await updateDeck(formData);
-            const id = response.id;
-             /*Call for re-render of deck in parent*/
-            loadDeck()
-            navigate(`/decks/${id}`)
-        } catch(error) {
-            if(error instanceof Error && error.name !== "AbortError") {
-                throw Error;
-            }
-        }
-  }
-  
+
+    try {
+      const response = await updateDeck(formData);
+      const id = response.id;
+      /*Call for re-render of deck in parent*/
+      loadDeck();
+      navigate(`/decks/${id}`);
+    } catch (error) {
+      if (error instanceof Error && error.name !== "AbortError") {
+        throw Error;
+      }
+    }
+  };
 
   const breadcrumb = (
     <nav aria-label="breadcrumb">
@@ -88,8 +84,8 @@ function EditDeck({deck, loadDeck} : EditDeckProps) {
         className="btn btn-secondary"
         type="button"
         onClick={() => {
-          navigate(`/decks/${deckId}`)}
-        }
+          navigate(`/decks/${deckId}`);
+        }}
       >
         Cancel
       </button>
@@ -109,4 +105,3 @@ function EditDeck({deck, loadDeck} : EditDeckProps) {
 }
 
 export default EditDeck;
-

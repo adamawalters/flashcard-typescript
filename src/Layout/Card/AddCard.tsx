@@ -1,26 +1,27 @@
-import {useState} from 'react'
-import { Deck } from '../../Types/types'
-import { useParams, Link } from 'react-router-dom';
-import CardForm from './CardForm';
-import { createCard } from '../../utils';
+import { useState } from "react";
+import { Deck } from "../../Types/types";
+import { useParams, Link } from "react-router-dom";
+import CardForm from "./CardForm";
+import { createCard } from "../../utils";
 
 type AddCardProps = {
-  deck: Deck, 
-  loadDeck: (signal?: AbortSignal) => Promise<void>
-}
+  deck: Deck;
+  loadDeck: (signal?: AbortSignal) => Promise<void>;
+};
 
-export default function AddCard({deck, loadDeck}: AddCardProps) {
-    /*This path: /decks/:deckId/cards/new */
+export default function AddCard({ deck, loadDeck }: AddCardProps) {
+  /*This path: /decks/:deckId/cards/new */
   /*Objective: lets users add cards to a deck one card at a time with a form for the front & back of the card. */
 
   /*Need deck ID from the parameter to know where to post the card */
-  const  deckId  = Number(useParams().deckId as string)
+  const deckId = Number(useParams().deckId as string);
 
   /*State to keep form data & form values in sync */
   const initialFormData = {
     front: "",
     back: "",
   };
+  
   const [formData, setFormData] = useState({ ...initialFormData });
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -35,7 +36,7 @@ export default function AddCard({deck, loadDeck}: AddCardProps) {
       await createCard(deckId, formData);
       setFormData({ ...initialFormData });
       /*Call for re-render in parent*/
-      loadDeck()
+      loadDeck();
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
         console.log(error);

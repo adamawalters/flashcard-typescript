@@ -13,8 +13,8 @@ export default function Layout() {
   const navigate = useNavigate();
   const loadDecks = useCallback(async (signal?: AbortSignal) => {
     try {
-      const decks = await listDecks(signal);
-      setDecks(decks);
+      const response = await listDecks(signal);
+      setDecks(response);
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
         throw Error;
@@ -31,18 +31,22 @@ export default function Layout() {
 
   /*Deletes deck after user confirmation. Passed to Home and Deck components*/
   const deleteDeckHandler = async (deckIdToDelete: number) => {
-    const canDelete =  window.confirm(`Delete this deck? You will not be able to recover it.`)
-    if(canDelete) {
+    const canDelete = window.confirm(
+      `Delete this deck? You will not be able to recover it.`
+    );
+    if (canDelete) {
       const newDecksPostDeletion = decks.filter(
         (deck) => deck.id !== deckIdToDelete
       );
       setDecks(newDecksPostDeletion);
-     console.log(`delete deck response: ${JSON.stringify(await deleteDeck(deckIdToDelete))}`);
+
+      await deleteDeck(deckIdToDelete);
+
       loadDecks();
       navigate(`/`);
-    }  
-  }
-  
+    }
+  };
+
   /*Layout component returns the Home, CreateDeck, or Decks View after fetching deck data from the API */
   if (decks) {
     return (
