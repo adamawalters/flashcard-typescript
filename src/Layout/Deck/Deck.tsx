@@ -65,16 +65,10 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
       "Delete this card? You will not be able to recover it."
     );
     if (canDelete) {
-      /*Create the array of cards without the card to delete and update the state, then make an API call to remove the ID*/
-      const cardsWithoutCard = deck.cards.filter(
-        (card) => card.id !== cardIdToDelete
-      );
-      setDeck({ ...deck, cards: cardsWithoutCard });
-      /*Update parent index */
-      loadDecks();
-
       try {
         await deleteCard(cardIdToDelete);
+        loadDeck();
+        loadDecks();
       } catch (error) {
         if (error instanceof Error) console.log(error.message);
       }

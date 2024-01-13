@@ -34,7 +34,6 @@ function EditDeck({deck, setDeck, loadDeck} : EditDeckProps) {
     
         try{
             const response = await updateDeck(formData);
-            setDeck({...formData});
             const id = response.id;
              /*Call for re-render of deck in parent*/
             loadDeck()
