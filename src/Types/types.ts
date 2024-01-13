@@ -19,3 +19,9 @@ export type CreateDeckType = {
     description: string
 }
 
+export type CreateCardType = {
+    front: string,
+    back: string
+    deckId?: number
+}
+

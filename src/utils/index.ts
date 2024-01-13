@@ -3,7 +3,7 @@
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
 
-import type { Card, Deck, CreateDeckType } from "../Types/types";
+import type { Card, Deck, CreateDeckType, CreateCardType } from "../Types/types";
 
 const API_BASE_URL = "http://localhost:3000"
 
@@ -159,11 +159,11 @@ export async function deleteDeck(deckId: number) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the new card, which will have an `id` property.
  */
-export async function createCard(deckId: number, card: Card, signal: AbortSignal) {
+export async function createCard(deckId: number, card: CreateCardType, signal?: AbortSignal) {
   // There is a bug in json-server, if you post to /decks/:deckId/cards the associated deckId is a string
   // and the card is not related to the deck because the data types of the ID's are different.
   const url = `${API_BASE_URL}/cards`;
-  card.deckId = Number(deckId);
+  card.deckId = deckId;
   const options = {
     method: "POST",
     headers,

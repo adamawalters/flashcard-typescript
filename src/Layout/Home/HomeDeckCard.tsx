@@ -20,7 +20,7 @@ export default function HomeDeckCard({deck, deleteDeckHandler}: HomeDeckCardProp
         </p>
         <div className="card-wrapper">
           <button className="btn btn-secondary card-btn">
-              <Link className="text-reset" to={`$/decks/${deck.id}`}>View</Link>
+              <Link className="text-reset" to={`/decks/${deck.id}`}>View</Link>
           </button>
           <button className="btn btn-primary card-btn">
               <Link className="text-reset" to={`/decks/${deck.id}/study`}>Study</Link>
