@@ -10,7 +10,7 @@ The styling utilizes CSS Bootstrap and some custom CSS.
 ## Screenshots
 
 Home page
-![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Home%20page.png?raw=true)
+![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Home%20page.png?raw=true) 
 
 Deck page
 ![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Deck%20page.png?raw=true)
