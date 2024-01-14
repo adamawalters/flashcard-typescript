@@ -23,7 +23,7 @@ function Deck({ deleteDeckHandler, loadDecks }: DeckProps) {
       id: 0,
       name: "",
       description: "",
-      cards: [],
+      cards: [], 
     };
   }, []);
 
