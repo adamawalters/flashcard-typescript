@@ -11,7 +11,6 @@ import type {
 } from "../Types/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-console.log(`base URL: ${API_BASE_URL}`)
 
 /**
  * Defines the default headers for these functions to work with `json-server`
