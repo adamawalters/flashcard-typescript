@@ -10,16 +10,16 @@ The styling utilizes CSS Bootstrap and some custom CSS.
 ## Screenshots
 
 Home page
-![image](https://github.com/adamawalters/flashcard-app/blob/main/screenshots/Home%20page.png?raw=true)
+![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Home%20page.png?raw=true)
 
 Deck page
-![image](https://github.com/adamawalters/flashcard-app/blob/main/screenshots/Deck%20page.png?raw=true)
+![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Deck%20page.png?raw=true)
 
 Study deck page
-![image](https://github.com/adamawalters/flashcard-app/blob/main/screenshots/Study%20page.png?raw=true)
+![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Study%20page.png?raw=true)
 
 Add card page
-![image](https://github.com/adamawalters/flashcard-app/blob/main/screenshots/Add%20card%20page.png?raw=true)
+![image](https://github.com/adamawalters/flashcard-typescript/blob/main/screenshots/Add%20card%20page.png?raw=true)
 
 ## Structure
 
