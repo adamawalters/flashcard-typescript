@@ -3,7 +3,7 @@ import type { CreateCardType } from "../../Types/types";
 import { useNavigate, useParams } from "react-router-dom";
 
 type CardFormProps = {
-  changeHandler: (event: React.ChangeEvent<HTMLFormElement>) => void;
+  changeHandler: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   submitHandler: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
   card: CreateCardType;
   edit: boolean;

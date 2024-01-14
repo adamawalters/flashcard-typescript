@@ -24,7 +24,7 @@ export default function AddCard({ deck, loadDeck }: AddCardProps) {
   
   const [formData, setFormData] = useState({ ...initialFormData });
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 

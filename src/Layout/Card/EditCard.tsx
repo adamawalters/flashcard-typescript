@@ -67,7 +67,7 @@ export default function EditCard({ deck, loadDeck }: EditCardProps) {
   };
 
   /*Keep card form data up to date with state */
-  const handleChange = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setCard({ ...card, [event.target.name]: event.target.value });
   };
 

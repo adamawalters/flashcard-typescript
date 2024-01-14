@@ -10,7 +10,7 @@ import type {
   CreateCardType,
 } from "../Types/types";
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
