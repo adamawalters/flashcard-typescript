@@ -10,7 +10,7 @@ type AddCardProps = {
 };
 
 export default function AddCard({ deck, loadDeck }: AddCardProps) {
-  /*This path: /decks/:deckId/cards/new */
+  /*Path: /decks/:deckId/cards/new */
   /*Objective: lets users add cards to a deck one card at a time with a form for the front & back of the card. */
 
   /*Need deck ID from the parameter to know where to post the card */
@@ -35,7 +35,7 @@ export default function AddCard({ deck, loadDeck }: AddCardProps) {
     try {
       await createCard(deckId, formData);
       setFormData({ ...initialFormData });
-      /*Call for re-render in parent*/
+      /*Update "Deck" state*/
       loadDeck();
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {

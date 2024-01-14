@@ -106,5 +106,5 @@ export default function EditCard({ deck, loadDeck }: EditCardProps) {
     );
   }
 
-  return "Loading";
+  return "Loading card...";
 }

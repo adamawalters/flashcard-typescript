@@ -3,7 +3,7 @@ import type { CreateCardType } from "../../Types/types";
 import { useNavigate, useParams } from "react-router-dom";
 
 type CardFormProps = {
-  changeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  changeHandler: (event: React.ChangeEvent<HTMLFormElement>) => void;
   submitHandler: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
   card: CreateCardType;
   edit: boolean;
@@ -16,7 +16,7 @@ export default function CardForm({
   edit,
 }: CardFormProps) {
   /* Edit prop is needed to determine what text on buttons to show for submit (differs between Edit & Add Card) */
-  const { deckId } = useParams();
+  const deckId = Number(useParams().deckId as string);
 
   /* Needed to navigate back home*/
   const navigate = useNavigate();

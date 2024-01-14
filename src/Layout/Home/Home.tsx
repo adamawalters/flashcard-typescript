@@ -21,7 +21,7 @@ function Home({ decks, deleteDeckHandler }: HomeProps) {
     </button>
   );
 
-  /* Creates card views for each deck in the decks state*/
+  /* Create card views for each deck in the decks state*/
   const deckList = decks.map((deck) => {
     return (
       <HomeDeckCard
