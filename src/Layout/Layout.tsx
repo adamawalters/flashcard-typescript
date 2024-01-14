@@ -47,8 +47,7 @@ export default function Layout() {
     }
   };
 
-  /*Layout component returns the Home, CreateDeck, or Decks View after fetching deck data from the API */
-  if (decks) {
+  /*Layout component returns the Home, CreateDeck, or Decks View */
     return (
       <>
         <Header />
@@ -79,5 +78,4 @@ export default function Layout() {
       </>
     );
   }
-  return "Loading";
-}
+

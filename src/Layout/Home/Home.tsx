@@ -22,15 +22,19 @@ function Home({ decks, deleteDeckHandler }: HomeProps) {
   );
 
   /* Creates card views for each deck in the decks state*/
-  const deckList = decks.map((deck, index) => {
+  const deckList = decks.map((deck) => {
     return (
       <HomeDeckCard
-        key={index}
+        key={deck.id}
         deck={deck}
         deleteDeckHandler={() => deleteDeckHandler(deck.id)}
       />
     );
   });
+
+  if(!decks.length) {
+    return "Loading decks..."
+  }
 
   return (
     <main>
